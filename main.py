@@ -9,7 +9,7 @@ from flask import Flask
 from threading import Thread
 
 # --- Константы и настройки ---
-TOKEN = os.getenv"7503402744:AAF7MWB0x_6Eh7AwE3GLdmGLuxkpottqt4s")  # или TOKEN = "123456789:ABC..." — временно
+TOKEN = "7503402744:AAF7MWB0x_6Eh7AwE3GLdmGLuxkpottqt4s"
 OWNER_ID = 7397365971
 PDF_FILE_PATH = "book.pdf"
 
