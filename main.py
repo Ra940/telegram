@@ -25,7 +25,9 @@ def index():
     return "Бот жив! ✅"
 
 def run_flask():
-    flask_app.run(host="0.0.0.0", port=8080)
+    port = int(os.environ.get("PORT", 8080))  # вот тут ключ!
+    flask_app.run(host="0.0.0.0", port=port)
+
 
 # --- Сохранение ID пользователей ---
 def save_user_id(user_id):
