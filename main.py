@@ -99,7 +99,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
 
-    # Получение сообщения от админа для рассылки
     if context.user_data.get("awaiting_post") and user_id == OWNER_ID:
         context.user_data["awaiting_post"] = False
         try:
@@ -115,12 +114,11 @@ async def handle_receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("❌ Нет пользователей.")
         return
 
-    # Подтверждение получения чека
     await update.message.reply_text("✅ Чек получен. Ожидайте подтверждения.")
 
 # --- Запуск бота (исправленный способ) ---
 async def run_bot():
-    print("🚀 main() запускается")
+    print("🚀 Бот запускается...")
     app = Application.builder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
@@ -129,12 +127,7 @@ async def run_bot():
     app.add_handler(MessageHandler(filters.TEXT | filters.PHOTO | filters.Document.ALL, handle_receipt))
 
     print("✅ Бот запущен!")
-    await app.initialize()
-    await app.start()
-    await app.updater.start_polling()
-    await app.updater.wait_until_closed()
-    await app.stop()
-    await app.shutdown()
+    await app.run_polling()
 
 if __name__ == "__main__":
     Thread(target=run_flask).start()
