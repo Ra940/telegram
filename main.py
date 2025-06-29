@@ -1,6 +1,7 @@
 import logging
 import os
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, InputFile
+import asyncio
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application, CommandHandler, CallbackQueryHandler,
     MessageHandler, ContextTypes, filters
@@ -13,8 +14,7 @@ TOKEN = "7503402744:AAF7MWB0x_6Eh7AwE3GLdmGLuxkpottqt4s"
 OWNER_ID = 7397365971
 PDF_FILE_PATH = "book.pdf"
 
-print(f"BOT_TOKEN: {TOKEN}")  # Для отладки — увидеть в логах Render
-
+print(f"BOT_TOKEN: {TOKEN}")
 logging.basicConfig(level=logging.INFO)
 
 # --- Flask ---
@@ -53,6 +53,7 @@ def main_menu(is_admin=False):
 
 # --- Команды ---
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print("📥 Получена команда /start")
     user_id = update.effective_user.id
     save_user_id(user_id)
     context.user_data["is_admin"] = user_id == OWNER_ID
@@ -65,7 +66,6 @@ async def stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id != OWNER_ID:
         await update.message.reply_text("⛔️ У вас нет доступа.")
         return
-
     try:
         with open("users.txt", "r") as f:
             ids = set(f.read().splitlines())
@@ -118,8 +118,9 @@ async def handle_receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Подтверждение получения чека
     await update.message.reply_text("✅ Чек получен. Ожидайте подтверждения.")
 
-# --- Основной запуск ---
-def main():
+# --- Запуск бота (исправленный способ) ---
+async def run_bot():
+    print("🚀 main() запускается")
     app = Application.builder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
@@ -128,8 +129,13 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT | filters.PHOTO | filters.Document.ALL, handle_receipt))
 
     print("✅ Бот запущен!")
-    app.run_polling()
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling()
+    await app.updater.wait_until_closed()
+    await app.stop()
+    await app.shutdown()
 
 if __name__ == "__main__":
     Thread(target=run_flask).start()
-    main()
+    asyncio.run(run_bot())
