@@ -25,9 +25,8 @@ def index():
     return "Бот жив! ✅"
 
 def run_flask():
-    port = int(os.environ.get("PORT", 8080))  # вот тут ключ!
+    port = int(os.environ.get("PORT", 8080))
     flask_app.run(host="0.0.0.0", port=port)
-
 
 # --- Сохранение ID пользователей ---
 def save_user_id(user_id):
@@ -116,9 +115,18 @@ async def handle_receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("❌ Нет пользователей.")
         return
 
-    await update.message.reply_text("✅ Чек получен. Ожидайте подтверждения.")
+    await update.message.reply_text("✅ Чек получен. Отправляю книгу...")
 
-# --- Запуск бота (исправленный способ) ---
+    # Отправка PDF-книги
+    if os.path.exists(PDF_FILE_PATH):
+        try:
+            await update.message.reply_document(document=open(PDF_FILE_PATH, "rb"))
+        except Exception as e:
+            await update.message.reply_text(f"❌ Не удалось отправить книгу: {e}")
+    else:
+        await update.message.reply_text("❌ PDF-файл не найден.")
+
+# --- Запуск бота ---
 async def run_bot():
     print("🚀 Бот запускается...")
     app = Application.builder().token(TOKEN).build()
@@ -131,5 +139,7 @@ async def run_bot():
     print("✅ Бот запущен!")
     await app.run_polling()
 
-
-
+# --- Старт всего ---
+if __name__ == "__main__":
+    Thread(target=run_flask).start()
+    asyncio.run(run_bot())
