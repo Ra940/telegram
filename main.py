@@ -1,4 +1,12 @@
-import logging import os from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, InputFile from telegram.ext import ( Application, CommandHandler, CallbackQueryHandler, MessageHandler, ContextTypes, filters ) from flask import Flask from threading import Thread
+import logging
+import os
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, InputFile
+from telegram.ext import (
+    Application, CommandHandler, CallbackQueryHandler,
+    MessageHandler, ContextTypes, filters
+)
+from flask import Flask
+from threading import Thread
 --- Константы и настройки ---
 TOKEN = os.getenv("BOT_TOKEN") OWNER_ID = 7397365971 PDF_FILE_PATH = "book.pdf" logging.basicConfig(level=logging.INFO)
 --- Flask ---
