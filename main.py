@@ -127,16 +127,7 @@ async def run_bot():
     app.add_handler(MessageHandler(filters.TEXT | filters.PHOTO | filters.Document.ALL, handle_receipt))
 
     print("✅ Бот запущен!")
-    await app.initialize()
-    await app.start()
-    await app.updater.start_polling()
-    await app.updater.wait_until_closed()
-    await app.stop()
-    await app.shutdown()
+    await app.run_polling()
 
-if __name__ == "__main__":
-    Thread(target=run_flask).start()
-    import asyncio
-    asyncio.run(run_bot())
 
 
