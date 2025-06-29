@@ -9,9 +9,11 @@ from flask import Flask
 from threading import Thread
 
 # --- Константы и настройки ---
-TOKEN = os.getenv("BOT_TOKEN")
+TOKEN = os.getenv(7503402744:AAF7MWB0x_6Eh7AwE3GLdmGLuxkpottqt4s)  # или TOKEN = "123456789:ABC..." — временно
 OWNER_ID = 7397365971
 PDF_FILE_PATH = "book.pdf"
+
+print(f"BOT_TOKEN: {TOKEN}")  # Для отладки — увидеть в логах Render
 
 logging.basicConfig(level=logging.INFO)
 
