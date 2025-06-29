@@ -12,7 +12,8 @@ from threading import Thread
 # --- Константы и настройки ---
 TOKEN = "7503402744:AAF7MWB0x_6Eh7AwE3GLdmGLuxkpottqt4s"
 OWNER_ID = 7397365971
-PDF_FILE_PATH = "book.pdf"
+PDF_FILE_PATH = "book.pdf.pdf"
+
 
 print(f"BOT_TOKEN: {TOKEN}")
 logging.basicConfig(level=logging.INFO)
