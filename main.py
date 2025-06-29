@@ -7,7 +7,7 @@ from telegram.ext import (
 )
 from flask import Flask
 from threading import Thread
---- Константы и настройки ---
+#--- Константы и настройки ---
 TOKEN = os.getenv("BOT_TOKEN") OWNER_ID = 7397365971 PDF_FILE_PATH = "book.pdf" logging.basicConfig(level=logging.INFO)
 --- Flask ---
 flask_app = Flask(name)
